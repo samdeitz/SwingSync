@@ -5,25 +5,29 @@ import java.nio.file.Path;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class Syncher {
 
+    private final JFrame frame;
     private final JPanel panel;
     private final Object[] args;
     
     /**
      * Initialize a syncher for your JFrame
      * 
-     * Start a syncher for your JFrame with your arguments
-     * for reinstantiation
+     * Start a syncher with your JFrame, main panel, 
+     * and your JPanel's parameters
      * 
      * @param frame your main JFrame
+     * @param panel your main panel
      * @param args argument list for the panel constructor
      */
-    public Syncher(JPanel panel, Object... args) {
+    public Syncher(JFrame frame, JPanel panel, Object... args) {
+        this.frame = frame;
         this.panel = panel;
         this.args = args;
+
+        frame.add(panel);
 
         try {
             Path outputPath = PathFinder.getOutputDirectory(panel.getClass());
@@ -40,7 +44,6 @@ public class Syncher {
             Constructor<?> constructor = findMatchingConstructor(burner);
 
             JPanel newMainPanel = (JPanel) constructor.newInstance(args);
-            JFrame frame = (JFrame) SwingUtilities.windowForComponent(panel);
             frame.getContentPane().removeAll();
             frame.getContentPane().add(newMainPanel);
             frame.revalidate();
