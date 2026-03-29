@@ -20,7 +20,7 @@ public class BurnerLoader {
         URL[] searchLocations = new URL[]{ pathURL };
 
         // Create ClassLoader
-        URLClassLoader burnerLoader = new URLClassLoader(searchLocations);
+        URLClassLoader burnerLoader = new URLClassLoader(searchLocations, null);
         
         // Make loader read the given class
         Class<?> burnerClass = burnerLoader.loadClass(classname);

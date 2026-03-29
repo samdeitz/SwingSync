@@ -8,7 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardWatchEventKinds;
-import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -16,10 +15,12 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class DirectoryWatcher implements Runnable {
     private final Path outputFolder;
     private final Class<?> targetClass;
+    private final Syncher syncher;
 
-    public DirectoryWatcher(String path, Class<?> targetClass) {
+    public DirectoryWatcher(String path, Class<?> targetClass, Syncher syncher) {
         outputFolder = Paths.get(path);
         this.targetClass = targetClass;
+        this.syncher = syncher;
     }
 
 
@@ -29,8 +30,6 @@ public class DirectoryWatcher implements Runnable {
     @Override
     public void run() {
         try {
-
-
             // Initialzie watchservice
             WatchService watcher = FileSystems.getDefault().newWatchService();
 
@@ -51,32 +50,38 @@ public class DirectoryWatcher implements Runnable {
             // process changes indefinitely
             while((watchKey = watcher.take()) != null) {
 
-                // loop through caught events
-                for (WatchEvent<?> event : watchKey.pollEvents()) {
+                // -- OLD FUCNTIONALITY -- 
+                // for (WatchEvent<?> event : watchKey.pollEvents()) {
 
-                    // gets the full path of the directory that triggered the event
-                    Path dirThatTriggeredEvent = (Path) watchKey.watchable();
+                //     // gets the full path of the directory that triggered the event
+                //     Path dirThatTriggeredEvent = (Path) watchKey.watchable();
 
-                    // attach filename (of class changed) to directory for full path
-                    Path fullPath = dirThatTriggeredEvent.resolve((Path) event.context());
+                //     // attach filename (of class changed) to directory for full path
+                //     Path fullPath = dirThatTriggeredEvent.resolve((Path) event.context());
 
-                    // remove everything before the output folder
-                    Path relativePath = outputFolder.relativize(fullPath);
+                //     // remove everything before the output folder
+                //     Path relativePath = outputFolder.relativize(fullPath);
 
-                    // stringify the relative path for processing
-                    String eventFile = relativePath.toString();
+                //     // stringify the relative path for processing
+                //     String eventFile = relativePath.toString();
                   
                     
-                    if (eventFile.contains(".class")) {
-                        eventFile = eventFile.substring(0, eventFile.length()-6);
-                        eventFile = eventFile.replace("\\", ".");
-                    }
+                //     if (eventFile.contains(".class")) {
+                //         eventFile = eventFile.substring(0, eventFile.length()-6);
+                //         eventFile = eventFile.replace("\\", ".");
+                //     }
 
-                    System.out.println(eventFile);
+                //     System.out.println(eventFile);
 
-                    Class<?> b = BurnerLoader.getBurnerLoader(outputFolder, eventFile);
+                //     Class<?> b = BurnerLoader.getBurnerLoader(outputFolder, eventFile);
 
-                }
+                // }
+
+                String anchorClass = targetClass.getName();
+
+                Class<?> b = BurnerLoader.getBurnerLoader(outputFolder, anchorClass);
+
+                syncher.reloadScreen(b);
 
                 watchKey.reset();
             }

@@ -17,8 +17,10 @@ public class PathFinder {
 
         try {
             // get the path from the given class
-            URI targetURI = targetClass.getProtectionDomain().getCodeSource().getLocation().toURI();
 
+            System.out.println("issue wwhere");
+            URI targetURI = targetClass.getProtectionDomain().getCodeSource().getLocation().toURI();
+            System.out.println("issue here");
             // convert URI to path
             Path targetPath = Paths.get(targetURI);
 
