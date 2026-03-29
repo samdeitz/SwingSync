@@ -13,10 +13,24 @@ import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 
 public class DirectoryWatcher implements Runnable {
+
+    /** Target path to watch */
     private final Path outputFolder;
+
+    /** Target class for synchronizer */
     private final Class<?> targetClass;
+
+    /** Synchronizer */
     private final Syncher syncher;
 
+    /**
+     * Initialize a new directory watcher to watch a directory for file changes
+     * 
+     * Creates a runnable watch service to monitor the `path` given.
+     * @param path path to watch
+     * @param targetClass target class to load
+     * @param syncher synchronizer to trigger screen reload
+     */
     public DirectoryWatcher(String path, Class<?> targetClass, Syncher syncher) {
         outputFolder = Paths.get(path);
         this.targetClass = targetClass;
@@ -25,7 +39,7 @@ public class DirectoryWatcher implements Runnable {
 
 
     /**
-     * Watches changes in path
+     * Watches for changes in the class files of the package containing the target class
      */
     @Override
     public void run() {
@@ -77,12 +91,16 @@ public class DirectoryWatcher implements Runnable {
 
                 // }
 
+                // get the name of the target class
                 String anchorClass = targetClass.getName();
-
+                
+                // initialize a new classloader for the target class
                 Class<?> b = BurnerLoader.getBurnerLoader(outputFolder, anchorClass);
 
+                // reload the screen with the new classloader
                 syncher.reloadScreen(b);
 
+                // reset key and continue watching
                 watchKey.reset();
             }
             
@@ -92,7 +110,13 @@ public class DirectoryWatcher implements Runnable {
     }
 
 
-
+    /**
+     * Register all subfolders within the root directory of the package to watch
+     * 
+     * @param rootDirectory build folder containing the target class
+     * @param watcher watch service for the folders
+     * @throws IOException issues with pathing
+     */
     private void registerAllFolders(Path rootDirectory, WatchService watcher) throws IOException {
 
         System.out.println("\n\tScanning project files...");

@@ -7,7 +7,8 @@ import java.nio.file.Path;
 public class BurnerLoader {
     
     /**
-     * Get a new class loader for the current state after a save
+     * Get a new class loader for the current state
+     * 
      * @param path Path where the ClassLoader from
      * @param classname name of the class for the ClassLoader
      * @return A burner class for the current satate
