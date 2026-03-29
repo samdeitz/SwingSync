@@ -2,7 +2,7 @@ package SwingSync;
 
 import java.lang.reflect.Constructor;
 import java.nio.file.Path;
-
+import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -30,8 +30,12 @@ public class Syncher {
     public Syncher(JFrame frame, JPanel panel, Object... args) {
         this.frame = frame;
         this.panel = panel;
-        this.args = args;
 
+        // edge case of one null parameter passed
+        if (args == null) this.args = new Object[]{null};
+        else this.args = args;
+
+        System.out.println(Arrays.toString(this.args));
         // add panel to frame
         frame.add(panel);
 
