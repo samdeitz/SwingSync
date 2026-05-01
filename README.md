@@ -18,9 +18,31 @@ SwingSync fundamentally changes how you build Java Swing applications. Instead o
 ## 🚀 Quick Start Guide
 
 ### 1. Installation
+
+**Manual Upload**
 1. Go to the [Releases page](./releases) and download the latest `swingsync-1.0.jar`.
 2. Drop the `.jar` file into a `lib` folder inside your Java project.
 3. Add the `.jar` to your IDE's referenced libraries (In VS Code, open the "Java Projects" sidebar, find "Referenced Libraries", click the `+`, and select the jar).
+
+**Gradle**
+
+1. Add JitPack Repo to your build file
+'''
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+''' 
+2. Add SwingSync as a dependency
+
+'''
+dependencies {
+        implementation 'com.github.samdeitz:SwingSync:Tag'
+}
+'''
 
 ### 2. The Golden Rule of SwingSync
 SwingSync uses a custom orphan `ClassLoader` to bypass Java's default memory cache. For this to work safely, **your UI classes must be inside a named package.** Do not use the "default" (unnamed) package at the root of your `src` folder.
