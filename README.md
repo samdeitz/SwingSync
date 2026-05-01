@@ -35,7 +35,7 @@ dependencyResolutionManagement {
     }
 }
 ```
-2. Add SwingSync as a dependency
+2. Add SwingSync as a dependency (Replace _Tag_ with version)
 ```
 dependencies {
         implementation 'com.github.samdeitz:SwingSync:Tag'
@@ -52,7 +52,7 @@ dependencies {
     </repository>
 </repositories>
 ```
-2. Add SwingSync as a Dependency
+2. Add SwingSync as a Dependency (Replace *Tag* with version)
 ```
 <dependency>
     <groupId>com.github.samdeitz</groupId>
@@ -96,3 +96,4 @@ public class AppLauncher {
         frame.setLocationRelativeTo(null);
     }
 }
+```
