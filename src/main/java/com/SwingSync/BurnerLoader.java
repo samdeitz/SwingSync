@@ -1,4 +1,4 @@
-package SwingSync;
+package com.SwingSync;
 
 import java.net.URL;
 import java.net.URLClassLoader;

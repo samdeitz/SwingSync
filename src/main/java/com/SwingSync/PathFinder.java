@@ -1,4 +1,4 @@
-package SwingSync;
+package com.SwingSync;
 
 import java.net.URI;
 import java.nio.file.Files;

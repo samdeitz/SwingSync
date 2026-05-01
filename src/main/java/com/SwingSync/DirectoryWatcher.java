@@ -1,4 +1,4 @@
-package SwingSync;
+package com.SwingSync;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;

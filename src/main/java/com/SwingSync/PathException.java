@@ -1,4 +1,4 @@
-package SwingSync;
+package com.SwingSync;
 
 public class PathException extends Exception {
 

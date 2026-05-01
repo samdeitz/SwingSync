@@ -1,4 +1,4 @@
-package SwingSync;
+package com.SwingSync;
 
 import java.lang.reflect.Constructor;
 import java.nio.file.Path;
