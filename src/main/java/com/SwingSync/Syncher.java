@@ -2,7 +2,7 @@ package com.SwingSync;
 
 import java.lang.reflect.Constructor;
 import java.nio.file.Path;
-import java.util.Arrays;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -35,11 +35,8 @@ public class Syncher {
         if (args == null) this.args = new Object[]{null};
         else this.args = args;
 
-        System.out.println(Arrays.toString(this.args));
         // add panel to frame
         frame.add(panel);
-
- 
     }
 
     /**
@@ -80,6 +77,7 @@ public class Syncher {
             frame.getContentPane().add(newMainPanel);
             frame.revalidate();
             frame.repaint();
+            // System.out.println("Repainted");
             
         } catch (Exception e) {
             System.out.println(e);

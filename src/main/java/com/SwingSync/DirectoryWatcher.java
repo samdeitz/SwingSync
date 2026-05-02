@@ -8,9 +8,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardWatchEventKinds;
+import java.nio.file.WatchEvent;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 
 public class DirectoryWatcher implements Runnable {
 
@@ -63,45 +65,26 @@ public class DirectoryWatcher implements Runnable {
 
             // process changes indefinitely
             while((watchKey = watcher.take()) != null) {
-
-                // -- OLD FUCNTIONALITY -- 
-                // for (WatchEvent<?> event : watchKey.pollEvents()) {
-
-                //     // gets the full path of the directory that triggered the event
-                //     Path dirThatTriggeredEvent = (Path) watchKey.watchable();
-
-                //     // attach filename (of class changed) to directory for full path
-                //     Path fullPath = dirThatTriggeredEvent.resolve((Path) event.context());
-
-                //     // remove everything before the output folder
-                //     Path relativePath = outputFolder.relativize(fullPath);
-
-                //     // stringify the relative path for processing
-                //     String eventFile = relativePath.toString();
-                  
-                    
-                //     if (eventFile.contains(".class")) {
-                //         eventFile = eventFile.substring(0, eventFile.length()-6);
-                //         eventFile = eventFile.replace("\\", ".");
-                //     }
-
-                //     System.out.println(eventFile);
-
-                //     Class<?> b = BurnerLoader.getBurnerLoader(outputFolder, eventFile);
-
-                // }
-
-                // get the name of the target class
-                String anchorClass = targetClass.getName();
                 
-                // initialize a new classloader for the target class
-                Class<?> b = BurnerLoader.getBurnerLoader(outputFolder, anchorClass);
+                // 1. CLEAR THE EVENTS
+                List<WatchEvent<?>> events = watchKey.pollEvents();
 
-                // reload the screen with the new classloader
+                // no events to clear
+                if (events.isEmpty()) {
+                    watchKey.reset();
+                    continue;
+                }
+
+                // 2. RUN RELOAD LOGIC
+                String anchorClass = targetClass.getName();
+                Class<?> b = BurnerLoader.getBurnerLoader(outputFolder, anchorClass);
                 syncher.reloadScreen(b);
 
-                // reset key and continue watching
-                watchKey.reset();
+                // 3. RESET
+                boolean valid = watchKey.reset();
+                if (!valid) {
+                    break; // Exit if the directory was deleted or service closed
+                }
             }
             
         } catch (Exception e) {
