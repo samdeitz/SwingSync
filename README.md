@@ -18,6 +18,7 @@ SwingSync fundamentally changes how you build Java Swing applications. Instead o
 ## 🚀 Quick Start Guide
 
 ### 1. Installation
+[![](https://jitpack.io/v/samdeitz/SwingSync.svg)](https://jitpack.io/#samdeitz/SwingSync)
 
 **Manual Upload**
 1. Go to the [Releases page](./releases) and download the latest `swingsync-1.0.jar`.
