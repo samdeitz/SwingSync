@@ -4,7 +4,7 @@
 
 SwingSync fundamentally changes how you build Java Swing applications. Instead of restarting your entire application every time you tweak a button's color or adjust a layout constraint, SwingSync watches your file system, dynamically intercepts the JVM's memory Metaspace, and rebuilds your active UI component in real-time.
 
-![Demo](<img width="800" height="600" alt="ssDemoSlow" src="https://github.com/user-attachments/assets/84400d93-08d7-459e-9fb7-c87db69dac7e" />)
+<img width="800" height="600" alt="ssDemoSlow" src="https://github.com/user-attachments/assets/84400d93-08d7-459e-9fb7-c87db69dac7e" />
 
 
 ## ✨ Features
